@@ -1,0 +1,1 @@
+//contiene le definizioni delle struct e i prototipi delle funzioni presenti in analyzer.c
