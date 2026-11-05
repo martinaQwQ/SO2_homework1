@@ -13,6 +13,10 @@ int main (int argc, char *argv[]){
     else {
         return 1;
     }
+
+    if (apriFile(&p) != 1){
+        return 1;
+        }
   
     return 0;
     }

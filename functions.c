@@ -106,14 +106,20 @@ int leggiParametri (int argc, char *argv[], Parametri *p ){
 
 
 int apriFile(Parametri *p){
-    FILE * file = fopen(p->input, "r");
+    FILE *file = fopen(p->input, "r");
    
    //file vuoto
     if (file == NULL){
         printf("Errore apertura file\n");
         return -1;
     }
-    else {
-        
+    char riga[1024];
+    int numeroRiga= 0;
+    while (fgets(riga, sizeof(riga), file) != NULL){
+          // printf(%s, riga);
+        numeroRiga++;
+        printf("Riga %d: %s\n", numeroRiga, riga);
     }
+    fclose(file);
+    return 0;
 }
