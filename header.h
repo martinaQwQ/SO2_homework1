@@ -12,5 +12,6 @@ typedef struct{
 }Parametri;
 
 int leggiParametri (int argc, char *argv[], Parametri *p );
-
+int apriFile(Parametri *p);
+void rimuoviCommento (char *riga);
 #endif 

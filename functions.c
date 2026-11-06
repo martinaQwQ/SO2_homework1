@@ -1,4 +1,7 @@
 #include "header.h"
+
+
+//manca ancora tanta roba 
 int leggiParametri (int argc, char *argv[], Parametri *p ){
     //inizializzazione struct
     p-> input = NULL;
@@ -105,6 +108,46 @@ int leggiParametri (int argc, char *argv[], Parametri *p ){
 }
 
 
+int inCommento= 0;
+void rimuoviCommento (char *riga){
+    
+    for (int i= 0; riga[i] != '\0'; i++){
+
+        if(inCommento== 1){
+            
+            // caso: */
+            if (riga[i]== '*' && riga[i+1] == '/'){
+                riga[i] = ' ';
+                riga[i+1] = ' ';
+                inCommento=0;
+
+            } else if(riga[i] != '\n'){
+                riga[i]= ' ';
+                
+            }
+        }
+
+        // caso: //
+        else if (riga[i] == '/' && riga[i+1] == '/'){
+            while (riga[i] != '\n' && riga[i] != '\0'){ 
+                riga[i] = ' ';
+                i++;
+                }
+           break; 
+            }
+        
+        // caso : /*
+        else if(riga[i]== '/' && riga[i+1] == '*'){
+            riga[i] = ' ';
+            riga[i+1]= ' ';
+            inCommento= 1;
+            i++;
+        }
+    }
+}
+
+
+
 int apriFile(Parametri *p){
     FILE *file = fopen(p->input, "r");
    
@@ -112,14 +155,30 @@ int apriFile(Parametri *p){
     if (file == NULL){
         printf("Errore apertura file\n");
         return -1;
-    }
+    } 
     char riga[1024];
     int numeroRiga= 0;
+    inCommento=0;
+
     while (fgets(riga, sizeof(riga), file) != NULL){
-          // printf(%s, riga);
         numeroRiga++;
-        printf("Riga %d: %s\n", numeroRiga, riga);
+        rimuoviCommento(riga);
+        printf("Riga %d: %s", numeroRiga, riga);
     }
-    fclose(file);
+
+    //controllo errori di lettura
+    if (ferror(file)){
+        printf("Errore durante la lettura\n");
+        fclose(file);
+        return -1;
+    }
+
+    //errore di chiusura 
+    if (fclose(file)== EOF){
+        printf("Errore durante la chiusura\n");
+        return -1;
+    }
+    
     return 0;
 }
+
