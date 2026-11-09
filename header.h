@@ -14,4 +14,7 @@ typedef struct{
 int leggiParametri (int argc, char *argv[], Parametri *p );
 int apriFile(Parametri *p);
 void rimuoviCommento (char *riga);
+void analizzaRiga(char *riga);
+int tipoValido(char *token);
+int nomeValido(char *token);
 #endif 

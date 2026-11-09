@@ -147,6 +147,93 @@ void rimuoviCommento (char *riga){
 }
 
 
+// verifica la chiusura delle graffe 
+int profondità = 0;
+int verificaProfondità (char *riga){
+    for (int i= 0; riga[i] != '\0'; i++){
+        if (riga[i] == '{'){
+            profondità ++;
+        }
+        else if (riga[i] == '}') {
+            profondità --;
+        }
+    }
+
+}
+
+int tipoValido (char *token){
+    if (strcmp(token, "int")== 0 || strcmp(token, "float")== 0 || strcmp(token, "double") == 0 || strcmp (token, "char")==0){
+        return 1;
+    }
+    return 0;
+}
+
+int nomeValido(char *token){
+    if (!(isalpha(token[0]) )|| token[0] != '_' ){
+        return 0;
+    }
+    return 1;
+}
+
+
+void analizzaRiga (char *riga){
+    char *token = strtok(riga, " \t,;\n=");
+
+    if (token == NULL){
+        return;
+    }
+    if (tipoValido(token)== 0) {
+        return;
+    }
+    char *tipo= token;
+    token= strtok(NULL, " \t,;\n=");
+    while (token != NULL){
+        if (nomeValido(token)== 0){
+            printf("Errore\n");
+            return;
+        } else {
+        printf("Tipo: %s, Variabile: %s\n", tipo, token);
+        token= strtok(NULL, " \t,;\n=");
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 int apriFile(Parametri *p){
     FILE *file = fopen(p->input, "r");
@@ -164,6 +251,7 @@ int apriFile(Parametri *p){
         numeroRiga++;
         rimuoviCommento(riga);
         printf("Riga %d: %s", numeroRiga, riga);
+        analizzaRiga(riga);
     }
 
     //controllo errori di lettura
